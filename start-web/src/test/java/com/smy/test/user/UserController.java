@@ -4,12 +4,13 @@ import com.smy.web.BaseResult;
 import com.smy.web.ObjectResult;
 import com.smy.web.PageParam;
 import com.smy.web.PageResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.datetime.DateFormatter;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.util.TimeZone;
 
 /**
  * Created by smy on 2018/7/19.
@@ -20,6 +21,20 @@ public class UserController {
 
     @Resource
     private UserService service;
+
+    @InitBinder
+    public void intDate(WebDataBinder dataBinder) {
+        DateFormatter dateFormatter = new DateFormatter("yyyy-MM-dd HH:mm:ss");
+        dateFormatter.setTimeZone(TimeZone.getDefault());
+        dataBinder.addCustomFormatter(dateFormatter);
+    }
+
+
+    @GetMapping("test")
+    public ObjectResult<User> test(User user) {
+        user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        return new ObjectResult<>(user);
+    }
 
     @PostMapping("save")
     public ObjectResult<User> save(User user) {

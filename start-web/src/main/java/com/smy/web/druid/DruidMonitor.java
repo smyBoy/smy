@@ -1,4 +1,4 @@
-package com.smy.web;
+package com.smy.web.druid;
 
 /**
  * Created by smy on 2018/7/19.

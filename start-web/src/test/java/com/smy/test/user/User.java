@@ -1,11 +1,15 @@
 package com.smy.test.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -24,12 +28,12 @@ public class User {
     @Id
     @Column(columnDefinition = "bigint COMMENT 'ID'")
     private Long id;
-    @CreationTimestamp
-    @Column(columnDefinition = "timestamp COMMENT '创建时间'")
-    private Timestamp createTime;
-    @UpdateTimestamp
-    @Column(columnDefinition = "timestamp COMMENT '更新时间'")
-    private Timestamp updateTime;
+    @ApiModelProperty(hidden = true)
+    @Column(columnDefinition = "bigint COMMENT '创建时间'")
+    private Long createTime;
+    @ApiModelProperty(hidden = true)
+    @Column(columnDefinition = "bigint COMMENT '更新时间'")
+    private Long updateTime;
     @Version
     @Column(columnDefinition = "bigint COMMENT '版本号'")
     private Long version;
@@ -39,4 +43,15 @@ public class User {
     private String username;
     @Column(columnDefinition = "varchar(30) COMMENT '密码'")
     private String password;
+
+    @PrePersist
+    public void prePersist() {
+        createTime = System.currentTimeMillis();
+        updateTime = createTime;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updateTime = System.currentTimeMillis();
+    }
 }
