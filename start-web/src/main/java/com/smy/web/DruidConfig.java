@@ -1,25 +1,32 @@
 package com.smy.web;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.alibaba.druid.support.spring.stat.BeanTypeAutoProxyCreator;
+import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
 /**
  * Created by smy on 2018/7/19.
  */
-@ConfigurationProperties(prefix = "druid")
+@ConfigurationProperties(prefix = "druid.monitor")
 @Configuration
 public class DruidConfig {
 
-    private String allow = "0.0.0.0";
+    private String allow = "";
     private String deny = "";
-    private String username = "admin";
+    private String username = "druid";
     private String password = "11``qqq";
     private String reset = "false";
+    private String exclusions = "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid*,/actuator/*,/v2/api-docs,/swagger*";
 
     /**
      * 注册一个StatViewServlet
@@ -50,7 +57,23 @@ public class DruidConfig {
         //添加过滤规则.
         filterRegistrationBean.addUrlPatterns("/*");
         //添加不需要忽略的格式信息.
-        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        filterRegistrationBean.addInitParameter("exclusions", exclusions);
         return filterRegistrationBean;
     }
+
+    @Bean(name = "druid-stat-interceptor")
+    public DruidStatInterceptor druidStatInterceptor() {
+        return new DruidStatInterceptor();
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "druid.monitor.spring", havingValue = "true")
+    public BeanTypeAutoProxyCreator beanTypeAutoProxyCreator() {
+        //必须使用接口注入才能被监控
+        BeanTypeAutoProxyCreator creator = new BeanTypeAutoProxyCreator();
+        creator.setTargetBeanType(DruidMonitor.class);
+        creator.setInterceptorNames("druid-stat-interceptor");
+        return creator;
+    }
+
 }

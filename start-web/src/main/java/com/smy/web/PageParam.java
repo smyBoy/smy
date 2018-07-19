@@ -16,9 +16,9 @@ import org.springframework.data.domain.Pageable;
 @ToString
 @ApiModel("分页查询参数")
 public class PageParam extends SortParam {
-    @ApiModelProperty(value = "页码")
+    @ApiModelProperty(value = "页码", required = true, example = "1")
     private int page;
-    @ApiModelProperty(value = "页面大小")
+    @ApiModelProperty(value = "页面大小", required = true, example = "10")
     private int size;
 
     public Pageable pageable() {

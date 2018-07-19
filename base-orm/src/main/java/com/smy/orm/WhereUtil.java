@@ -31,6 +31,7 @@ class WhereUtil {
             if (q == null) {
                 return;
             }
+            f.setAccessible(true);
             String name = "".equals(q.value()) ? f.getName() : q.value();
             Object value = ObjectUtil.getValue(f, where);
             addWhere(list, builder, root, q.type(), name, value);

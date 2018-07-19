@@ -5,6 +5,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.CollectionUtils;
@@ -35,6 +36,8 @@ public class ApiSwaggerConfig implements InitializingBean, BeanFactoryAware {
     private DefaultListableBeanFactory beanFactory;
 
     private List<ApiSwaggerData> swagger;
+
+    private boolean enable = true;
 
     public static Parameter head(String name, String description) {
         return new ParameterBuilder()
@@ -85,6 +88,7 @@ public class ApiSwaggerConfig implements InitializingBean, BeanFactoryAware {
 
     private Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(enable)
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .build()
@@ -96,6 +100,7 @@ public class ApiSwaggerConfig implements InitializingBean, BeanFactoryAware {
         list.add(api(data.getVersion()));
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("v" + data.getVersion())
+                .enable(enable)
                 .select()
                 .apis(new ApiSwaggerPredicate(data.getVersion()))
                 .build()
