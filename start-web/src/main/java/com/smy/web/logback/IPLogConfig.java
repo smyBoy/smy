@@ -2,6 +2,7 @@ package com.smy.web.logback;
 
 import ch.qos.logback.classic.pattern.ClassicConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import com.smy.util.NetUtil;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -14,8 +15,8 @@ public class IPLogConfig extends ClassicConverter {
     @Override
     public String convert(ILoggingEvent iLoggingEvent) {
         try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
+            return NetUtil.getLocalHost().getHostAddress();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

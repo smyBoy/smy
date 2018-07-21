@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class WebUtil {
 
-    public HttpServletRequest getRequest() {
+    public static HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
-    private static final String WHERE_BUILDER = "whereBuilder";
+    private static final String WHERE_BUILDER = "WhereBuilder";
 
     public WhereBuilder getWhereBuilder() {
         return getWhereBuilder(getRequest());

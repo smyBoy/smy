@@ -24,6 +24,7 @@ public class ObjectUtil {
         return fields;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T getValue(Field field, Object object) {
         try {
             return (T) field.get(object);
@@ -39,7 +40,6 @@ public class ObjectUtil {
             throw new RuntimeException(String.format("Error ObjectUtil.setValue(%s,Object,Object)", field.getName()), e);
         }
     }
-
 
 
 }

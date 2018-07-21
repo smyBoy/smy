@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("test")
     public ObjectResult<User> test(User user) {
-        user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        user.setUpdateTime(System.currentTimeMillis());
         return new ObjectResult<>(user);
     }
 
