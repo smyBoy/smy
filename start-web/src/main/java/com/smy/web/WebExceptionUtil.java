@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @ControllerAdvice
 @Slf4j
-public class WebExceptionController {
+public class WebExceptionUtil {
 
     @Resource
     private HttpServletRequest request;
@@ -41,7 +41,7 @@ public class WebExceptionController {
         return code >= min && code < max;
     }
 
-    private static String append(String... args) {
+    public static String append(String... args) {
         if (args.length == 0) {
             return "";
         }
