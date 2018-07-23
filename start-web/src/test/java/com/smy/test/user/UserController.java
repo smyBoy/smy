@@ -5,11 +5,11 @@ import com.smy.web.ObjectResult;
 import com.smy.web.PageParam;
 import com.smy.web.PageResult;
 import org.springframework.format.datetime.DateFormatter;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
 import java.util.TimeZone;
 
 /**
@@ -32,7 +32,6 @@ public class UserController {
 
     @GetMapping("test")
     public ObjectResult<User> test(User user) {
-        user.setUpdateTime(System.currentTimeMillis());
         return new ObjectResult<>(user);
     }
 
@@ -53,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping("page")
-    public PageResult<User> page(UserParam param, PageParam pageParam) {
+    public PageResult<User> page(UserParam param,@Validated PageParam pageParam) {
         return service.page(param, pageParam);
     }
 

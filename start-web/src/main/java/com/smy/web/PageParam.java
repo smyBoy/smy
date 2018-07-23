@@ -8,6 +8,8 @@ import lombok.ToString;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import javax.validation.constraints.Min;
+
 /**
  * Created by smy on 2018/6/20.
  */
@@ -16,9 +18,11 @@ import org.springframework.data.domain.Pageable;
 @ToString
 @ApiModel("分页查询参数")
 public class PageParam extends SortParam {
-    @ApiModelProperty(value = "页码", required = true, example = "1")
+    @ApiModelProperty(value = "页码", required = true)
+    @Min(value = 0, message = "页码数必须大于0")
     private int page;
-    @ApiModelProperty(value = "页面大小", required = true, example = "10")
+    @ApiModelProperty(value = "页面大小", required = true)
+    @Min(value = 0, message = "页面大小必须大于0")
     private int size;
 
     public Pageable pageable() {

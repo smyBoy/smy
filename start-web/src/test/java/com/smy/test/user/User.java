@@ -30,10 +30,10 @@ public class User {
     private Long id;
     @ApiModelProperty(hidden = true)
     @Column(columnDefinition = "bigint COMMENT '创建时间'")
-    private Long createTime;
+    private Timestamp createTime;
     @ApiModelProperty(hidden = true)
     @Column(columnDefinition = "bigint COMMENT '更新时间'")
-    private Long updateTime;
+    private Timestamp updateTime;
     @Version
     @Column(columnDefinition = "bigint COMMENT '版本号'")
     private Long version;
@@ -44,14 +44,4 @@ public class User {
     @Column(columnDefinition = "varchar(30) COMMENT '密码'")
     private String password;
 
-    @PrePersist
-    public void prePersist() {
-        createTime = System.currentTimeMillis();
-        updateTime = createTime;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updateTime = System.currentTimeMillis();
-    }
 }
