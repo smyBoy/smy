@@ -2,6 +2,7 @@ package com.smy.test.user;
 
 import com.smy.orm.CommonDao;
 import com.smy.orm.WhereBuilder;
+import com.smy.web.ObjectResult;
 import com.smy.web.PageParam;
 import com.smy.web.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * Created by smy on 2018/6/1.
  */
-class WhereUtil {
+public class WhereUtil {
 
-    static List<String> addWhere(List<Predicate> list, CriteriaBuilder builder, Root root, Object where) {
+    public static List<String> addWhere(List<Predicate> list, CriteriaBuilder builder, Root root, Object where) {
         List<String> keys = new ArrayList<>();
         if (where == null) {
             return keys;
@@ -34,57 +34,66 @@ class WhereUtil {
             f.setAccessible(true);
             String name = "".equals(q.value()) ? f.getName() : q.value();
             Object value = ObjectUtil.getValue(f, where);
-            addWhere(list, builder, root, q.type(), name, value);
-            keys.add(name);
+            Predicate predicate = createWhere(builder, root, q.type(), name, value);
+            if (predicate != null) {
+                list.add(predicate);
+                keys.add(name);
+            }
+
         });
         return keys;
     }
 
-    static void addWhere(List<Predicate> list, CriteriaBuilder builder, Root root, WhereType type, String name, Object value) {
+    public static boolean addWhere(List<Predicate> list, CriteriaBuilder builder, Root root, WhereData whereData) {
+        Predicate predicate = createWhere(builder, root, whereData);
+        if (predicate == null) {
+            return false;
+        } else {
+            list.add(predicate);
+            return true;
+        }
+    }
+
+    public static Predicate createWhere(CriteriaBuilder builder, Root root, WhereData whereData) {
+        return createWhere(builder, root, whereData.getType(), whereData.getName(), whereData.getValue());
+    }
+
+    private static Predicate createWhere(CriteriaBuilder builder, Root root, WhereType type, String name, Object value) {
         if (value == null || "".equals(value)) {
             if (WhereType.eqOrNull.equals(type)) {
-                list.add(builder.isNull(root.get(name)));
+                return builder.isNull(root.get(name));
             }
-            return;
+            return null;
         }
         switch (type) {
             case eq:
-                list.add(builder.equal(root.get(name), value));
-                break;
+                return builder.equal(root.get(name), value);
             case like:
-                list.add(builder.like(root.get(name), "%" + value + "%"));
-                break;
+                return builder.like(root.get(name), "%" + value + "%");
             case leftLike:
-                list.add(builder.like(root.get(name), value + "%"));
-                break;
+                return builder.like(root.get(name), value + "%");
             case ge:
-                list.add(builder.greaterThanOrEqualTo(root.get(name), (Comparable) value));
-                break;
+                return builder.greaterThanOrEqualTo(root.get(name), (Comparable) value);
             case gt:
-                list.add(builder.greaterThan(root.get(name), (Comparable) value));
-                break;
+                return builder.greaterThan(root.get(name), (Comparable) value);
             case le:
-                list.add(builder.lessThanOrEqualTo(root.get(name), (Comparable) value));
-                break;
+                return builder.lessThanOrEqualTo(root.get(name), (Comparable) value);
             case lt:
-                list.add(builder.lessThan(root.get(name), (Comparable) value));
-                break;
+                return builder.lessThan(root.get(name), (Comparable) value);
             case in:
                 CriteriaBuilder.In in = builder.in(root.get(name));
                 if (value instanceof Collection && !CollectionUtils.isEmpty((Collection<?>) value)) {
                     ((Collection) value).forEach(in::value);
-                    list.add(in);
-                    break;
+                    return in;
                 }
             case locate:
-                list.add(builder.gt(builder.locate(new LiteralExpression((CriteriaBuilderImpl) builder, value), root.get(name)), Integer.valueOf(0)));
-                break;
+                return builder.gt(builder.locate(new LiteralExpression((CriteriaBuilderImpl) builder, value), root.get(name)), Integer.valueOf(0));
             default:
                 throw new RuntimeException("error " + type + " for " + name);
         }
     }
 
-    static List<Order> createOrder(Root root, Sort sort) {
+    public static List<Order> createOrder(Root root, Sort sort) {
         List<Order> list = new ArrayList<>();
         if (sort != null && sort.isSorted()) {
             sort.stream().forEach(order -> {

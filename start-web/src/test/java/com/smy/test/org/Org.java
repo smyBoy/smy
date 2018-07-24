@@ -1,17 +1,20 @@
-package com.smy.test.user;
+package com.smy.test.org;
 
+import com.smy.util.ChangeIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * Created by smy on 2018/7/19.
+ * Created by smy on 2018/7/23.
  */
 @Getter
 @Setter
@@ -19,29 +22,35 @@ import java.sql.Timestamp;
 @Entity
 @Table
 @ApiModel("用户")
-public class User {
+public class Org {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(columnDefinition = "bigint COMMENT 'ID'")
+    @ChangeIgnore
     private Long id;
     @ApiModelProperty(dataType = "string")
     @Column(columnDefinition = "timestamp COMMENT '创建时间'")
+    @ChangeIgnore
     private Timestamp createTime;
     @ApiModelProperty(dataType = "string")
     @Column(columnDefinition = "timestamp COMMENT '更新时间'")
+    @ChangeIgnore
     private Timestamp updateTime;
     @Version
     @Column(columnDefinition = "bigint COMMENT '版本号'")
+    @ChangeIgnore
     private Long version;
     @Column(columnDefinition = "varchar(30) COMMENT '名称'")
     private String name;
-    @Column(columnDefinition = "varchar(30) COMMENT '登陆名'")
-    private String username;
-    @Column(columnDefinition = "varchar(30) COMMENT '密码'")
-    private String password;
-    @Column(columnDefinition = "bigint COMMENT '机构ID'")
-    private Long orgId;
-    @ApiModelProperty(dataType = "string")
-    private Date birthday;
 
+    @PrePersist
+    public void prePersist() {
+        createTime = new Timestamp(System.currentTimeMillis());
+        updateTime = createTime;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updateTime = new Timestamp(System.currentTimeMillis());
+    }
 }

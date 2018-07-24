@@ -22,19 +22,6 @@ public class UserController {
     @Resource
     private UserService service;
 
-    @InitBinder
-    public void intDate(WebDataBinder dataBinder) {
-        DateFormatter dateFormatter = new DateFormatter("yyyy-MM-dd HH:mm:ss");
-        dateFormatter.setTimeZone(TimeZone.getDefault());
-        dataBinder.addCustomFormatter(dateFormatter);
-    }
-
-
-    @GetMapping("test")
-    public ObjectResult<User> test(User user) {
-        return new ObjectResult<>(user);
-    }
-
     @PostMapping("save")
     public ObjectResult<User> save(User user) {
         return new ObjectResult<>(service.save(user));
@@ -52,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("page")
-    public PageResult<User> page(UserParam param,@Validated PageParam pageParam) {
+    public PageResult<User> page(UserParam param, @Validated PageParam pageParam) {
         return service.page(param, pageParam);
     }
 

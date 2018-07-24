@@ -77,7 +77,7 @@ public class WhereData implements SimpleQuery {
     @Override
     public List<Predicate> createPredicates(CriteriaBuilder b, Root r) {
         List<Predicate> list = new ArrayList<>();
-        WhereUtil.addWhere(list, b, r, type, name, value);
+        WhereUtil.addWhere(list, b, r, this);
         return list;
     }
 }

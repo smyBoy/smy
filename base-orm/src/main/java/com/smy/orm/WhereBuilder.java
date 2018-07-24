@@ -1,7 +1,5 @@
 package com.smy.orm;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,7 +11,6 @@ import java.util.List;
 /**
  * Created by smy on 2018/6/6.
  */
-@Getter(AccessLevel.PACKAGE)
 @ToString
 public class WhereBuilder implements SimpleQuery {
 
@@ -44,15 +41,16 @@ public class WhereBuilder implements SimpleQuery {
         for (Object data : where) {
             if (data instanceof WhereData) {
                 whereData = (WhereData) data;
-                WhereUtil.addWhere(list, b, r, whereData.getType(), whereData.getName(), whereData.getValue());
-                keys.add(whereData.getName());
+                if (WhereUtil.addWhere(list, b, r, whereData)) {
+                    keys.add(whereData.getName());
+                }
             } else {
                 keys.addAll(WhereUtil.addWhere(list, b, r, data));
             }
         }
         for (WhereData data : defaultWhere) {
             if (!keys.contains(data.getName())) {
-                WhereUtil.addWhere(list, b, r, data.getType(), data.getName(), data.getValue());
+                WhereUtil.addWhere(list, b, r, data);
             }
         }
         return list;
