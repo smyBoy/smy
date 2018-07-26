@@ -36,10 +36,10 @@ public class Org {
     @Column(columnDefinition = "timestamp COMMENT '更新时间'")
     @ChangeIgnore
     private Timestamp updateTime;
-    @Version
-    @Column(columnDefinition = "bigint COMMENT '版本号'")
-    @ChangeIgnore
-    private Long version;
+//    @Version
+//    @Column(columnDefinition = "bigint COMMENT '版本号'")
+//    @ChangeIgnore
+//    private Long version;
     @Column(columnDefinition = "varchar(30) COMMENT '名称'")
     private String name;
 
