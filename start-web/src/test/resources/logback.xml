@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <conversionRule conversionWord="ip" converterClass="com.smy.web.logback.IPLogConfig"/>
+    <!--<conversionRule conversionWord="ip" converterClass="com.smy.web.logback.IPLogConfig"/>-->
     <property name="LOG_FILE" value="logs/start-web"/>
-    <property name="PATTERN" value="%ip %d{yyyy-MM-dd HH:mm:ss.SSS}  %-5level [%thread]  %logger{36} -%msg%n"/>
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}  %-5level [%thread]  %logger{36} -%msg%n"/>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${PATTERN}</pattern>
