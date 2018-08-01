@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.smy.web.druid.DruidConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.smy.web.druid.DruidConfig,com.smy.web.WebExceptionUtil
