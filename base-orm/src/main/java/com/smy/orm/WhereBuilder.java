@@ -14,9 +14,9 @@ import java.util.List;
 @ToString
 public class WhereBuilder implements SimpleQuery {
 
-    private List where = new ArrayList();
+    protected List where = new ArrayList();
 
-    private List<WhereData> defaultWhere = new ArrayList<>();
+    protected List<WhereData> defaultWhere = new ArrayList<>();
 
     public WhereBuilder addDefault(WhereData data) {
         defaultWhere.add(data);

@@ -15,11 +15,16 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by smy on 2018/6/1.
  */
 public class WhereUtil {
+
+    public static List<WhereData> whereData(Object where, java.util.function.Predicate<Where> filter) {
+        return null;
+    }
 
     public static List<String> addWhere(List<Predicate> list, CriteriaBuilder builder, Root root, Object where) {
         List<String> keys = new ArrayList<>();
@@ -99,6 +104,21 @@ public class WhereUtil {
             sort.stream().forEach(order -> {
                 list.add(new OrderImpl(root.get(order.getProperty()), order.isAscending()));
             });
+        }
+        return list;
+    }
+
+    public static List<CascadeData> cascadeData(Class c) {
+        List<CascadeData> list = new ArrayList<>();
+        Cascade cascade = (Cascade) c.getAnnotation(Cascade.class);
+        if (cascade != null) {
+            list.add(new CascadeData(cascade.mainField(), cascade.join(), cascade.joinField()));
+        }
+        Cascade.Cascades cascades = (Cascade.Cascades) c.getAnnotation(Cascade.Cascades.class);
+        if (cascades != null) {
+            for (Cascade cascade1 : cascades.value()) {
+                list.add(new CascadeData(cascade1.mainField(), cascade1.join(), cascade1.joinField()));
+            }
         }
         return list;
     }

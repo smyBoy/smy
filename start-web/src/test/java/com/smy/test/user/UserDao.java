@@ -41,4 +41,6 @@ public class UserDao {
         return entityManager.createQuery(query).getResultList();
     }
 
+
+
 }

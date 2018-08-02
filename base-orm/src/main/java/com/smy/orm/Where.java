@@ -7,9 +7,9 @@ import java.lang.annotation.*;
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
 public @interface Where {
+
+    Class join() default void.class;
 
     String value() default "";
 
