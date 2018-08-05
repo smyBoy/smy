@@ -9,9 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by smy on 2018/5/8.
@@ -51,25 +51,6 @@ public class CommonDaoImpl implements CommonDao {
     }
 
     @Override
-    public int update(Class c, Map<String, ?> setMap, SimpleQuery where) {
-        if (CollectionUtils.isEmpty(setMap)) {
-            throw new RuntimeException("update data is empty!");
-        }
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaUpdate update = builder.createCriteriaUpdate(c);
-        Root root = update.from(c);
-        setMap.forEach((k, v) -> {
-            update.set(k, v);
-        });
-        List<Predicate> list = where.createPredicates(builder, root);
-        if (!CollectionUtils.isEmpty(list)) {
-            update.where(list.toArray(new Predicate[list.size()]));
-        }
-        return entityManager.createQuery(update).executeUpdate();
-    }
-
-
-    @Override
     public void delete(Object t) {
         entityManager.remove(t);
     }
@@ -83,30 +64,17 @@ public class CommonDaoImpl implements CommonDao {
     }
 
     @Override
-    public int delete(Class c, SimpleQuery where) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaDelete delete = builder.createCriteriaDelete(c);
-        Root root = delete.from(c);
-        List<Predicate> list = where.createPredicates(builder, root);
-        if (!CollectionUtils.isEmpty(list)) {
-            delete.where(list.toArray(new Predicate[list.size()]));
-        }
-        return entityManager.createQuery(delete).executeUpdate();
-    }
-
-
-    @Override
     public <T> T find(Class<T> c, Serializable id) {
         return entityManager.find(c, id);
     }
 
     @Override
-    public <T> List<T> list(Class<T> c, SimpleQuery where, Sort sort, Integer start, Integer size) {
+    public <T> List<T> list(Class<T> c, WhereBuilder where, Sort sort, Integer start, Integer size) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(c);
         Root root = query.from(c);
         query.select(root);
-        List<Predicate> pList = where.createPredicates(builder, root);
+        List<Predicate> pList = predicates(builder, root, join -> query.from(join), where);
         if (!CollectionUtils.isEmpty(pList)) {
             query.where(pList.toArray(new Predicate[pList.size()]));
         }
@@ -124,17 +92,36 @@ public class CommonDaoImpl implements CommonDao {
         return typedQuery.getResultList();
     }
 
-    @Override
-    public <T> int count(Class<T> c, SimpleQuery where) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> query = builder.createQuery(Long.class);
-        Root root = query.from(c);
-        query.select(builder.countDistinct(root));
-        List<Predicate> pList = where.createPredicates(builder, root);
-        if (!CollectionUtils.isEmpty(pList)) {
-            query.where(pList.toArray(new Predicate[pList.size()]));
-        }
-        return entityManager.createQuery(query).getSingleResult().intValue();
+    private static List<Predicate> predicates(CriteriaBuilder builder, Root root, RootFactory factory, WhereBuilder where) {
+        List<Predicate> list = new ArrayList<>();
+        List<String> hasFields = new ArrayList<>();
+        where.getWhere().forEach(whereData -> {
+            list.add(WhereUtil.createWhere(builder, root, whereData));
+            hasFields.add(whereData.getName());
+        });
+        where.getDefaultWhere().forEach(whereData -> {
+            if (hasFields.contains(whereData.getName())) {
+                return;
+            }
+            list.add(WhereUtil.createWhere(builder, root, whereData));
+        });
+        where.getCascadeWhere().forEach((join, whereList) -> {
+            if (CollectionUtils.isEmpty(whereList)) {
+                return;
+            }
+            CascadeData cascadeData = where.getCascade().stream().filter(c -> join.equals(c.getJoin())).findFirst().get();
+            Root root2 = factory.root(join);
+            list.add(builder.equal(root.get(cascadeData.getMainField()), root2.get(cascadeData.getJoinField())));
+            whereList.forEach(whereData -> {
+                list.add(WhereUtil.createWhere(builder, root, whereData));
+            });
+        });
+        return list;
     }
+
+    public interface RootFactory {
+        Root root(Class c);
+    }
+
 
 }

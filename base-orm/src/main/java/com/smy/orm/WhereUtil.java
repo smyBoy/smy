@@ -22,41 +22,20 @@ import java.util.Map;
  */
 public class WhereUtil {
 
-    public static List<WhereData> whereData(Object where, java.util.function.Predicate<Where> filter) {
-        return null;
-    }
 
-    public static List<String> addWhere(List<Predicate> list, CriteriaBuilder builder, Root root, Object where) {
-        List<String> keys = new ArrayList<>();
-        if (where == null) {
-            return keys;
+    public static List<CascadeData> cascadeData(Class c) {
+        List<CascadeData> list = new ArrayList<>();
+        Cascade cascade = (Cascade) c.getAnnotation(Cascade.class);
+        if (cascade != null) {
+            list.add(new CascadeData(cascade.mainField(), cascade.join(), cascade.joinField()));
         }
-        ObjectUtil.getFields(where.getClass()).forEach(f -> {
-            Where q = f.getAnnotation(Where.class);
-            if (q == null) {
-                return;
+        Cascade.Cascades cascades = (Cascade.Cascades) c.getAnnotation(Cascade.Cascades.class);
+        if (cascades != null) {
+            for (Cascade cascade1 : cascades.value()) {
+                list.add(new CascadeData(cascade1.mainField(), cascade1.join(), cascade1.joinField()));
             }
-            f.setAccessible(true);
-            String name = "".equals(q.value()) ? f.getName() : q.value();
-            Object value = ObjectUtil.getValue(f, where);
-            Predicate predicate = createWhere(builder, root, q.type(), name, value);
-            if (predicate != null) {
-                list.add(predicate);
-                keys.add(name);
-            }
-
-        });
-        return keys;
-    }
-
-    public static boolean addWhere(List<Predicate> list, CriteriaBuilder builder, Root root, WhereData whereData) {
-        Predicate predicate = createWhere(builder, root, whereData);
-        if (predicate == null) {
-            return false;
-        } else {
-            list.add(predicate);
-            return true;
         }
+        return list;
     }
 
     public static Predicate createWhere(CriteriaBuilder builder, Root root, WhereData whereData) {
@@ -64,12 +43,6 @@ public class WhereUtil {
     }
 
     private static Predicate createWhere(CriteriaBuilder builder, Root root, WhereType type, String name, Object value) {
-        if (value == null || "".equals(value)) {
-            if (WhereType.eqOrNull.equals(type)) {
-                return builder.isNull(root.get(name));
-            }
-            return null;
-        }
         switch (type) {
             case eq:
                 return builder.equal(root.get(name), value);
@@ -108,18 +81,4 @@ public class WhereUtil {
         return list;
     }
 
-    public static List<CascadeData> cascadeData(Class c) {
-        List<CascadeData> list = new ArrayList<>();
-        Cascade cascade = (Cascade) c.getAnnotation(Cascade.class);
-        if (cascade != null) {
-            list.add(new CascadeData(cascade.mainField(), cascade.join(), cascade.joinField()));
-        }
-        Cascade.Cascades cascades = (Cascade.Cascades) c.getAnnotation(Cascade.Cascades.class);
-        if (cascades != null) {
-            for (Cascade cascade1 : cascades.value()) {
-                list.add(new CascadeData(cascade1.mainField(), cascade1.join(), cascade1.joinField()));
-            }
-        }
-        return list;
-    }
 }

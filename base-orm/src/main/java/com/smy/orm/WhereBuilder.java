@@ -1,25 +1,55 @@
 package com.smy.orm;
 
-import lombok.ToString;
+import com.smy.util.ObjectUtil;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by smy on 2018/6/6.
+ * Created by smy on 2018/8/5.
  */
-@ToString
-public class WhereBuilder implements SimpleQuery {
+@Getter(AccessLevel.PACKAGE)
+public class WhereBuilder {
 
-    protected List where = new ArrayList();
+    private List<WhereData> where = new ArrayList<>();
 
-    protected List<WhereData> defaultWhere = new ArrayList<>();
+    private List<WhereData> defaultWhere = new ArrayList<>();
 
-    public WhereBuilder addDefault(WhereData data) {
-        defaultWhere.add(data);
+    private List<CascadeData> cascade = new ArrayList<>();
+
+    private Map<Class, List<WhereData>> cascadeWhere = new HashMap<>();
+
+    public WhereBuilder add(Object data) {
+        if (data == null) {
+            return this;
+        }
+        WhereUtil.cascadeData(data.getClass()).forEach(this::cascade);
+        ObjectUtil.getFields(data.getClass()).forEach(f -> {
+            Where q = f.getAnnotation(Where.class);
+            if (q == null) {
+                return;
+            }
+            f.setAccessible(true);
+            Object value = ObjectUtil.getValue(f, data);
+            if (value == null) {
+                return;
+            }
+            String name = "".equals(q.value()) ? f.getName() : q.value();
+            if (void.class.equals(q.join())) {
+                add(new WhereData(q.type(), name, value));
+            } else {
+                add(q.join(), new WhereData(q.type(), name, value));
+            }
+        });
+        return this;
+    }
+
+    public WhereBuilder cascade(CascadeData data) {
+        cascade.add(data);
         return this;
     }
 
@@ -28,31 +58,18 @@ public class WhereBuilder implements SimpleQuery {
         return this;
     }
 
-    public WhereBuilder add(Object data) {
-        where.add(data);
+    public WhereBuilder addDefault(WhereData data) {
+        defaultWhere.add(data);
         return this;
     }
 
-    @Override
-    public List<Predicate> createPredicates(CriteriaBuilder b, Root r) {
-        List<Predicate> list = new ArrayList<>();
-        List<String> keys = new ArrayList<>();
-        WhereData whereData;
-        for (Object data : where) {
-            if (data instanceof WhereData) {
-                whereData = (WhereData) data;
-                if (WhereUtil.addWhere(list, b, r, whereData)) {
-                    keys.add(whereData.getName());
-                }
-            } else {
-                keys.addAll(WhereUtil.addWhere(list, b, r, data));
-            }
+    public WhereBuilder add(Class join, WhereData data) {
+        List<WhereData> list = cascadeWhere.get(join);
+        if (list == null) {
+            list = new ArrayList<>();
         }
-        for (WhereData data : defaultWhere) {
-            if (!keys.contains(data.getName())) {
-                WhereUtil.addWhere(list, b, r, data);
-            }
-        }
-        return list;
+        list.add(data);
+        cascadeWhere.put(join, list);
+        return this;
     }
 }

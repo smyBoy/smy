@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,8 +16,8 @@ import java.util.List;
  */
 @Getter
 @ToString
-public class WhereData implements SimpleQuery {
-    private WhereData(WhereType type, String name, Object value) {
+public class WhereData {
+    WhereData(WhereType type, String name, Object value) {
         this.type = type;
         this.name = name;
         this.value = value;
@@ -60,7 +61,6 @@ public class WhereData implements SimpleQuery {
         return new WhereData(WhereType.in, name, value);
     }
 
-
     public static WhereData in(String name, Object... value) {
         Collection collection = new ArrayList();
         for (Object o : value) {
@@ -69,15 +69,8 @@ public class WhereData implements SimpleQuery {
         return in(name, collection);
     }
 
-
     public static WhereData locate(String name, String value) {
         return new WhereData(WhereType.locate, name, value);
     }
 
-    @Override
-    public List<Predicate> createPredicates(CriteriaBuilder b, Root r) {
-        List<Predicate> list = new ArrayList<>();
-        WhereUtil.addWhere(list, b, r, this);
-        return list;
-    }
 }

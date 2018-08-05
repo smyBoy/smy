@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * Created by smy on 2018/8/2.
+ * Created by smy on 2018/8/5.
  */
-@Getter
 @AllArgsConstructor
+@Getter
 @ToString
 public class CascadeData {
-
     private String mainField;
-
     private Class join;
-
     private String joinField;
 }

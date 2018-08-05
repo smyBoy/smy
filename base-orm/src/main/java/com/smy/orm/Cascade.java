@@ -3,7 +3,7 @@ package com.smy.orm;
 import java.lang.annotation.*;
 
 /**
- * Created by smy on 2018/8/2.
+ * Created by smy on 2018/8/5.
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
