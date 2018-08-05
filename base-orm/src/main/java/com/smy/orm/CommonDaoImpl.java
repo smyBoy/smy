@@ -109,7 +109,7 @@ public class CommonDaoImpl implements CommonDao {
             if (CollectionUtils.isEmpty(whereList)) {
                 return;
             }
-            CascadeData cascadeData = where.getCascade().stream().filter(c -> join.equals(c.getJoin())).findFirst().get();
+            CascadeData cascadeData = where.getCascade().stream().filter(c -> join.equals(c.getJoin())).findFirst().orElseThrow(() -> new RuntimeException("no join for search"));
             Root root2 = factory.root(join);
             list.add(builder.equal(root.get(cascadeData.getMainField()), root2.get(cascadeData.getJoinField())));
             whereList.forEach(whereData -> {
