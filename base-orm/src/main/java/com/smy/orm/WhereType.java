@@ -1,8 +1,10 @@
 package com.smy.orm;
 
 /**
- * Created by smy on 2018/6/1.
+ * 查询支持类型。
+ *
+ * @author smy
  */
 public enum WhereType {
-    eq, eqOrNull, like, leftLike, gt, ge, lt, le, in, locate;
+    eq, like, leftLike, gt, ge, lt, le, in, locate;
 }

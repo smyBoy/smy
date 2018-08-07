@@ -3,7 +3,9 @@ package com.smy.orm;
 import java.lang.annotation.*;
 
 /**
- * Created by smy on 2018/6/1.
+ * 查询标签。
+ *
+ * @author smy
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

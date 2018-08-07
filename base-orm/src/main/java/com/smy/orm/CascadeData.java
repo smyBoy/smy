@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * Created by smy on 2018/8/5.
+ * 级联查询数据。
+ *
+ * @author smy
  */
 @AllArgsConstructor
 @Getter

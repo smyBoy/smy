@@ -3,7 +3,9 @@ package com.smy.orm;
 import java.lang.annotation.*;
 
 /**
- * Created by smy on 2018/8/5.
+ * 级联查询标签。
+ *
+ * @author smy
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,6 +18,9 @@ public @interface Cascade {
 
     String joinField();
 
+    /**
+     *级联查询多注解支持。
+     */
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
     @interface Cascades {

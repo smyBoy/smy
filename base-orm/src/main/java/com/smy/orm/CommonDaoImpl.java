@@ -14,7 +14,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by smy on 2018/5/8.
+ * 通用Dao实现类。
+ *
+ * @author smy
  */
 @Repository("commonDao")
 public class CommonDaoImpl implements CommonDao {
@@ -69,12 +71,12 @@ public class CommonDaoImpl implements CommonDao {
     }
 
     @Override
-    public <T> List<T> list(Class<T> c, WhereBuilder where, Sort sort, Integer start, Integer size) {
+    public <T> List<T> list(Class<T> c, SimpleQuery where, Sort sort, Integer start, Integer size) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(c);
         Root root = query.from(c);
         query.select(root);
-        List<Predicate> pList = predicates(builder, root, join -> query.from(join), where);
+        List<Predicate> pList = where.createPredicates(builder, root, query::from);
         if (!CollectionUtils.isEmpty(pList)) {
             query.where(pList.toArray(new Predicate[pList.size()]));
         }
@@ -91,37 +93,5 @@ public class CommonDaoImpl implements CommonDao {
         }
         return typedQuery.getResultList();
     }
-
-    private static List<Predicate> predicates(CriteriaBuilder builder, Root root, RootFactory factory, WhereBuilder where) {
-        List<Predicate> list = new ArrayList<>();
-        List<String> hasFields = new ArrayList<>();
-        where.getWhere().forEach(whereData -> {
-            list.add(WhereUtil.createWhere(builder, root, whereData));
-            hasFields.add(whereData.getName());
-        });
-        where.getDefaultWhere().forEach(whereData -> {
-            if (hasFields.contains(whereData.getName())) {
-                return;
-            }
-            list.add(WhereUtil.createWhere(builder, root, whereData));
-        });
-        where.getCascadeWhere().forEach((join, whereList) -> {
-            if (CollectionUtils.isEmpty(whereList)) {
-                return;
-            }
-            CascadeData cascadeData = where.getCascade().stream().filter(c -> join.equals(c.getJoin())).findFirst().orElseThrow(() -> new RuntimeException("no join for search"));
-            Root root2 = factory.root(join);
-            list.add(builder.equal(root.get(cascadeData.getMainField()), root2.get(cascadeData.getJoinField())));
-            whereList.forEach(whereData -> {
-                list.add(WhereUtil.createWhere(builder, root, whereData));
-            });
-        });
-        return list;
-    }
-
-    public interface RootFactory {
-        Root root(Class c);
-    }
-
 
 }

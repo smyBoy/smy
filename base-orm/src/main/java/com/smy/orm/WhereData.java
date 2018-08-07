@@ -12,11 +12,13 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by smy on 2018/6/6.
+ * 单一查询条件。
+ *
+ * @author smy
  */
 @Getter
 @ToString
-public class WhereData {
+public class WhereData implements SimpleQuery {
     WhereData(WhereType type, String name, Object value) {
         this.type = type;
         this.name = name;
@@ -73,4 +75,8 @@ public class WhereData {
         return new WhereData(WhereType.locate, name, value);
     }
 
+    @Override
+    public List<Predicate> createPredicates(CriteriaBuilder b, Root r, RootFactory factory) {
+        return Arrays.asList(WhereUtil.createWhere(b, r, this));
+    }
 }

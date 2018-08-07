@@ -4,16 +4,21 @@ import com.smy.util.ObjectUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by smy on 2018/8/5.
+ * 查询条件构造/实现。
+ *
+ * @author smy
  */
 @Getter(AccessLevel.PACKAGE)
-public class WhereBuilder {
+public class WhereBuilder implements SimpleQuery {
 
     private List<WhereData> where = new ArrayList<>();
 
@@ -71,5 +76,10 @@ public class WhereBuilder {
         list.add(data);
         cascadeWhere.put(join, list);
         return this;
+    }
+
+    @Override
+    public List<Predicate> createPredicates(CriteriaBuilder b, Root r, RootFactory factory) {
+        return WhereUtil.predicates(b, r, factory, this);
     }
 }

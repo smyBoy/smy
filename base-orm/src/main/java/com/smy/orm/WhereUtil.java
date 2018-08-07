@@ -1,7 +1,6 @@
 package com.smy.orm;
 
 
-import com.smy.util.ObjectUtil;
 import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
 import org.hibernate.query.criteria.internal.OrderImpl;
 import org.hibernate.query.criteria.internal.expression.LiteralExpression;
@@ -15,10 +14,11 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Created by smy on 2018/6/1.
+ * 查询工具类。
+ *
+ * @author smy
  */
 public class WhereUtil {
 
@@ -35,6 +35,33 @@ public class WhereUtil {
                 list.add(new CascadeData(cascade1.mainField(), cascade1.join(), cascade1.joinField()));
             }
         }
+        return list;
+    }
+
+    public static List<Predicate> predicates(CriteriaBuilder builder, Root root, SimpleQuery.RootFactory factory, WhereBuilder where) {
+        List<Predicate> list = new ArrayList<>();
+        List<String> hasFields = new ArrayList<>();
+        where.getWhere().forEach(whereData -> {
+            list.add(WhereUtil.createWhere(builder, root, whereData));
+            hasFields.add(whereData.getName());
+        });
+        where.getDefaultWhere().forEach(whereData -> {
+            if (hasFields.contains(whereData.getName())) {
+                return;
+            }
+            list.add(WhereUtil.createWhere(builder, root, whereData));
+        });
+        where.getCascadeWhere().forEach((join, whereList) -> {
+            if (CollectionUtils.isEmpty(whereList)) {
+                return;
+            }
+            CascadeData cascadeData = where.getCascade().stream().filter(c -> join.equals(c.getJoin())).findFirst().orElseThrow(() -> new RuntimeException("no join for search"));
+            Root root2 = factory.root(join);
+            list.add(builder.equal(root.get(cascadeData.getMainField()), root2.get(cascadeData.getJoinField())));
+            whereList.forEach(whereData -> {
+                list.add(WhereUtil.createWhere(builder, root, whereData));
+            });
+        });
         return list;
     }
 
