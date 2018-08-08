@@ -5,7 +5,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Created by smy on 2018/6/11.
+ * swagger数据描述。
+ *
+ * @author smy
  */
 @Getter
 @Setter

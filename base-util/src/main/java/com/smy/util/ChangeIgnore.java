@@ -3,7 +3,10 @@ package com.smy.util;
 import java.lang.annotation.*;
 
 /**
- * Created by smy on 2018/7/23.
+ * 变更忽略标签。
+ *
+ * @author smy
+ * @see ObjectUtil#update(Object, Object)
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

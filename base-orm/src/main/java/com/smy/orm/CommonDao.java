@@ -1,11 +1,15 @@
 package com.smy.orm;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 通用Dao。
@@ -51,6 +55,16 @@ public interface CommonDao {
     void update(Collection list);
 
     /**
+     * 条件更新。
+     *
+     * @param c      对象类型
+     * @param setMap 更新值
+     * @param where  条件
+     * @return 成功更新条数
+     */
+    int update(Class c, Map<String, ?> setMap, SimpleQuery where);
+
+    /**
      * 删除。根据ID删除对象。
      *
      * @param t 对象
@@ -91,6 +105,15 @@ public interface CommonDao {
     }
 
     /**
+     * 条件删除。
+     *
+     * @param c     对象类型
+     * @param where 条件
+     * @return 成功删除条数
+     */
+    int delete(Class c, SimpleQuery where);
+
+    /**
      * 查询对象。
      *
      * @param c   对象类型
@@ -99,6 +122,25 @@ public interface CommonDao {
      * @return 对象
      */
     <T> T find(Class<T> c, Serializable id);
+
+    /**
+     * 条件获取。
+     *
+     * @param c     对象类型
+     * @param where 条件
+     * @param <T>   泛型约束
+     * @return 对象
+     */
+    default <T> T find(Class<T> c, SimpleQuery where) {
+        List<T> list = list(c, where, Sort.unsorted(), null, null);
+        if (list.size() == 1) {
+            return list.get(0);
+        } else if (list.size() == 0) {
+            return null;
+        } else {
+            throw new RuntimeException(list.size() + " result for find one");
+        }
+    }
 
     /**
      * 查询对象列表。
@@ -147,6 +189,31 @@ public interface CommonDao {
      */
     default <T> List<T> list(Class<T> c) {
         return list(c, new WhereBuilder());
+    }
+
+    /**
+     * 简单计数。
+     *
+     * @param c     对象类型
+     * @param where 条件
+     * @return 数量
+     */
+    int count(Class c, SimpleQuery where);
+
+    /**
+     * 分页查询
+     *
+     * @param c        对象类型
+     * @param where    条件
+     * @param pageable spring-jpa分页参数
+     * @param <T>      泛型约束
+     * @return spring-jpa分页返回值
+     */
+    default <T> Page<T> page(Class<T> c, SimpleQuery where, Pageable pageable) {
+        return new PageImpl<>(
+                list(c, where, pageable.getSort(), (int) pageable.getOffset(), pageable.getPageSize()),
+                pageable,
+                count(c, where));
     }
 
 

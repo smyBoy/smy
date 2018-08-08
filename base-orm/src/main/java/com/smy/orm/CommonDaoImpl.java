@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 通用Dao实现类。
@@ -53,6 +54,24 @@ public class CommonDaoImpl implements CommonDao {
     }
 
     @Override
+    public int update(Class c, Map<String, ?> setMap, SimpleQuery where) {
+        if (CollectionUtils.isEmpty(setMap)) {
+            throw new RuntimeException("update data is empty!");
+        }
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate update = builder.createCriteriaUpdate(c);
+        Root root = update.from(c);
+        setMap.forEach((k, v) -> {
+            update.set(k, v);
+        });
+        List<Predicate> list = where.createPredicates(builder, root, update::from);
+        if (!CollectionUtils.isEmpty(list)) {
+            update.where(list.toArray(new Predicate[list.size()]));
+        }
+        return entityManager.createQuery(update).executeUpdate();
+    }
+
+    @Override
     public void delete(Object t) {
         entityManager.remove(t);
     }
@@ -63,6 +82,18 @@ public class CommonDaoImpl implements CommonDao {
             return;
         }
         list.forEach(entityManager::remove);
+    }
+
+    @Override
+    public int delete(Class c, SimpleQuery where) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaDelete delete = builder.createCriteriaDelete(c);
+        Root root = delete.from(c);
+        List<Predicate> list = where.createPredicates(builder, root, delete::from);
+        if (!CollectionUtils.isEmpty(list)) {
+            delete.where(list.toArray(new Predicate[list.size()]));
+        }
+        return entityManager.createQuery(delete).executeUpdate();
     }
 
     @Override
@@ -92,6 +123,19 @@ public class CommonDaoImpl implements CommonDao {
             typedQuery.setMaxResults(size);
         }
         return typedQuery.getResultList();
+    }
+
+    @Override
+    public int count(Class c, SimpleQuery where) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+        Root root = query.from(c);
+        query.select(builder.countDistinct(root));
+        List<Predicate> pList = where.createPredicates(builder, root, query::from);
+        if (!CollectionUtils.isEmpty(pList)) {
+            query.where(pList.toArray(new Predicate[pList.size()]));
+        }
+        return entityManager.createQuery(query).getSingleResult().intValue();
     }
 
 }

@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * Created by smy on 2018/7/23.
+ * 变更数据。
+ *
+ * @author smy
+ * @see ObjectUtil#update(Object, Object)
  */
 @Getter
 @ToString

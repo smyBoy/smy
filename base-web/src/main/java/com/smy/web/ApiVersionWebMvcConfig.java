@@ -4,7 +4,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
- * Created by smy on 2018/5/25.
+ * 版本控制配置类。
+ *
+ * @author smy
  */
 public class ApiVersionWebMvcConfig extends WebMvcConfigurationSupport {
 

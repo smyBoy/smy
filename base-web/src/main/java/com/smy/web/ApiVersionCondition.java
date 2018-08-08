@@ -9,7 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by smy on 2018/5/23.
+ * 基于spring扩展的版本判定。
+ *
+ * @author smy
  */
 @AllArgsConstructor
 public class ApiVersionCondition implements RequestCondition<ApiVersionCondition> {

@@ -24,7 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by smy on 2018/6/11.
+ * swagger配置类。<br>
+ * 1、默认加载{@link RestController}<br>
+ * 2、配置文件配置api.swagger.-{@link ApiSwaggerData},开启指定版本的swagger控制。
+ *
+ * @author smy
+ * @see ApiSwaggerData
  */
 @ConfigurationProperties(prefix = "api")
 @EnableSwagger2
@@ -39,6 +44,13 @@ public class ApiSwaggerConfig implements InitializingBean, BeanFactoryAware {
 
     private boolean enable = true;
 
+    /**
+     * swagger head参数生产工厂。
+     *
+     * @param name        参数名称
+     * @param description 参数描述
+     * @return swagger head参数对象。
+     */
     public static Parameter head(String name, String description) {
         return new ParameterBuilder()
                 .name(name)
@@ -59,6 +71,11 @@ public class ApiSwaggerConfig implements InitializingBean, BeanFactoryAware {
                 .build();
     }
 
+    /**
+     * 添加默认swagger参数。需要在ApiSwaggerConfig初始化前加载进去。
+     *
+     * @param parameter swagger参数。
+     */
     public static void add(Parameter parameter) {
         parameters.add(parameter);
     }

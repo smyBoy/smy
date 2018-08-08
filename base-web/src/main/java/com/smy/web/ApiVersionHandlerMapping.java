@@ -5,7 +5,9 @@ import org.springframework.web.servlet.mvc.condition.RequestCondition;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
- * Created by smy on 2018/5/23.
+ * 基于spring扩展版本控制分发。
+ *
+ * @author smy
  */
 public class ApiVersionHandlerMapping extends RequestMappingHandlerMapping {
 

@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import springfox.documentation.RequestHandler;
 
 /**
- * Created by smy on 2018/6/10.
+ * swagger版本扫描选择器。
+ * 可以扫描{@link ApiVersion}
+ *
+ * @author smy
  */
 @AllArgsConstructor
 public class ApiSwaggerPredicate implements Predicate<RequestHandler> {

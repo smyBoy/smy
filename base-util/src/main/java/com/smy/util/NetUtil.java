@@ -5,7 +5,9 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 
 /**
- * Created by smy on 2018/7/21.
+ * 网络工具。
+ *
+ * @author smy
  */
 public class NetUtil {
 
@@ -18,7 +20,8 @@ public class NetUtil {
                 // 在所有的接口下再遍历IP
                 for (Enumeration inetAddrs = anInterface.getInetAddresses(); inetAddrs.hasMoreElements(); ) {
                     InetAddress inetAddr = (InetAddress) inetAddrs.nextElement();
-                    if (!inetAddr.isLoopbackAddress()) {// 排除loopback类型地址
+                    if (!inetAddr.isLoopbackAddress()) {
+                        // 排除loopback类型地址
                         if (inetAddr.isSiteLocalAddress()) {
                             // 如果是site-local地址，就是它了
                             return inetAddr;

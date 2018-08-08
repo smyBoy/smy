@@ -3,7 +3,7 @@ package com.smy.web;
 import java.lang.annotation.*;
 
 /**
- * Created by smy on 2018/5/25.
+ * 版本控制标签。
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

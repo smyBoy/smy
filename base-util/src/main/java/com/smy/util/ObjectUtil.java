@@ -8,7 +8,9 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * Created by smy on 2018/6/1.
+ * 对象工具。
+ *
+ * @author smy
  */
 public class ObjectUtil {
 
