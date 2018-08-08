@@ -1,8 +1,9 @@
 package com.smy.web.druid;
 
 /**
- * Created by smy on 2018/7/19.
+ * spring druid监控接口。
  *
+ * @author smy
  * @see DruidConfig#beanTypeAutoProxyCreator()
  */
 public interface DruidMonitor {

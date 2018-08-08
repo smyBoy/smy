@@ -8,10 +8,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * 日志打印IP信息，应用于微服务的日志收集
- * Created by smy on 2018/7/20.
+ * 日志打印IP信息，应用于微服务的日志收集。
+ *
+ * @author smy
  */
-public class IPLogConfig extends ClassicConverter {
+public class IpConverter extends ClassicConverter {
     @Override
     public String convert(ILoggingEvent iLoggingEvent) {
         try {

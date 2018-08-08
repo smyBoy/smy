@@ -125,6 +125,7 @@ public class CommonDaoImpl implements CommonDao {
         return typedQuery.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public int count(Class c, SimpleQuery where) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();

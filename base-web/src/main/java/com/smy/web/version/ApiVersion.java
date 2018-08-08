@@ -1,4 +1,4 @@
-package com.smy.web;
+package com.smy.web.version;
 
 import java.lang.annotation.*;
 

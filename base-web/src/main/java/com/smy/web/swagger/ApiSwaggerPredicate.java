@@ -1,6 +1,7 @@
-package com.smy.web;
+package com.smy.web.swagger;
 
 import com.google.common.base.Predicate;
+import com.smy.web.version.ApiVersion;
 import lombok.AllArgsConstructor;
 import springfox.documentation.RequestHandler;
 

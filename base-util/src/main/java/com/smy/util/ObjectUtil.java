@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  * @author smy
  */
 public class ObjectUtil {
-
+    @SuppressWarnings("unchecked")
     public static <T> List<ChangeData> update(T original, T update) {
         List<ChangeData> changeDataList = new ArrayList<>();
         List<Field> fields = getFields(original.getClass());

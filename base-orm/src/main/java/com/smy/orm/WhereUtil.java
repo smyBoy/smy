@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class WhereUtil {
 
-
+    @SuppressWarnings("unchecked")
     public static List<CascadeData> cascadeData(Class c) {
         List<CascadeData> list = new ArrayList<>();
         Cascade cascade = (Cascade) c.getAnnotation(Cascade.class);
@@ -59,7 +59,7 @@ public class WhereUtil {
             Root root2 = factory.root(join);
             list.add(builder.equal(root.get(cascadeData.getMainField()), root2.get(cascadeData.getJoinField())));
             whereList.forEach(whereData -> {
-                list.add(WhereUtil.createWhere(builder, root, whereData));
+                list.add(WhereUtil.createWhere(builder, root2, whereData));
             });
         });
         return list;

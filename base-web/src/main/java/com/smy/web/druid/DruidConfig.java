@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by smy on 2018/7/19.
+ * druid监控配置类。
+ *
+ * @author smy
  */
 @ConfigurationProperties(prefix = "druid.monitor")
 @Configuration

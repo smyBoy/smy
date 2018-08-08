@@ -1,4 +1,4 @@
-package com.smy.web;
+package com.smy.web.swagger;
 
 import lombok.Getter;
 import lombok.Setter;

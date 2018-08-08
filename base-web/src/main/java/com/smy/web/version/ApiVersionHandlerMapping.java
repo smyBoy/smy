@@ -1,4 +1,4 @@
-package com.smy.web;
+package com.smy.web.version;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;

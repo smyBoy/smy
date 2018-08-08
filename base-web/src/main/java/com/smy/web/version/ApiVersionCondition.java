@@ -1,4 +1,4 @@
-package com.smy.web;
+package com.smy.web.version;
 
 import lombok.AllArgsConstructor;
 import org.springframework.lang.Nullable;

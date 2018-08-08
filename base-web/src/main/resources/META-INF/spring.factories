@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.smy.web.ApiVersionWebMvcConfig,com.smy.web.ApiSwaggerConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.smy.web.version.ApiVersionWebMvcConfig,com.smy.web.swagger.ApiSwaggerConfig
