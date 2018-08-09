@@ -27,14 +27,12 @@ import java.util.Date;
 public class BaseEntity {
     @ApiModelProperty(value = "创建时间")
     @Column(columnDefinition = "datetime COMMENT '创建时间'")
-    @ChangeIgnore
     private Date createTime;
     @ApiModelProperty(value = "更新时间")
     @Column(columnDefinition = "datetime COMMENT '更新时间'")
-    @ChangeIgnore
     private Date updateTime;
     @ApiModelProperty(value = "状态")
-    @Column(columnDefinition = "int(3) COMMENT '状态'")
+    @Column(columnDefinition = "int(2) COMMENT '状态'")
     private int state;
 
     @PrePersist

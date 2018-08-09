@@ -3,6 +3,7 @@ package com.smy.start.web.user;
 import com.smy.orm.CommonDao;
 import com.smy.orm.WhereData;
 import com.smy.util.ObjectUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class UserService {
     @Transactional
     public User update(User user) {
         User original = commonDao.find(User.class, user.getId());
-        ObjectUtil.update(original, user);
+        BeanUtils.copyProperties(user, original, "id", "createTime", "updateTime");
         return commonDao.update(original);
     }
 
@@ -48,11 +49,11 @@ public class UserService {
 
     @Transactional
     public void changeState2(int id, int state) {
-        dao.changeState2(id,state);
+        dao.changeState2(id, state);
     }
 
     @Transactional
     public void changeState3(int id, int state) {
-        dao.changeState3(id,state);
+        dao.changeState3(id, state);
     }
 }

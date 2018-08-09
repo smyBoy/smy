@@ -22,6 +22,5 @@ public class BaseIDEntity extends BaseEntity {
     @Id
     @ApiModelProperty("ID")
     @Column(columnDefinition = "int COMMENT 'ID'")
-    @ChangeIgnore
     private Integer id;
 }
