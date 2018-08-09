@@ -1,5 +1,6 @@
-package com.smy.web;
+package com.smy.start.web;
 
+import com.smy.web.ObjectResult;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -10,7 +11,9 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 /**
- * Created by smy on 2018/6/20.
+ * 分页查询返回值。
+ *
+ * @author smy
  */
 @Getter
 @Setter

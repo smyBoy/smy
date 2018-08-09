@@ -1,19 +1,14 @@
-package com.smy.web;
+package com.smy.web.exception;
 
 import lombok.Getter;
 
 /**
  * Web异常统一封装。
- * 400——客户端错误，error，打印地址和uri
- * 500——服务器错误，error，打印请求参数异常
- * 600——业务级错误，warn
- * Created by smy on 2018/7/21.
+ *
+ * @author smy
  */
 @Getter
 public class WebException extends RuntimeException {
-    /**
-     * @see {@link BaseResult#getCode()}
-     */
     private int code;
 
     public WebException(int code) {

@@ -24,14 +24,12 @@ public class DruidConfig {
     private String deny = "";
     private String username = "druid";
     private String password = "11``qqq";
-    private String reset = "false";
-    private String exclusions = "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid*,/actuator/*,/v2/api-docs,/swagger*";
+    private String reset = "true";
+    private String exclusions = "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid*,/actuator*,/v2/api-docs,/swagger*,/error";
 
-    /**
-     * 注册一个StatViewServlet
-     */
     @Bean
     public ServletRegistrationBean druidStatViewServlet() {
+        //注册一个StatViewServlet
         //org.springframework.boot.context.embedded.ServletRegistrationBean提供类的进行注册.
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
         //添加初始化参数：initParams
@@ -47,11 +45,10 @@ public class DruidConfig {
         return servletRegistrationBean;
     }
 
-    /**
-     * 注册一个：filterRegistrationBean
-     */
+
     @Bean
     public FilterRegistrationBean druidStatFilter() {
+        //注册一个：filterRegistrationBean
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
         //添加过滤规则.
         filterRegistrationBean.addUrlPatterns("/*");

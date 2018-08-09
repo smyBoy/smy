@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 /**
- * Created by smy on 2018/6/20.
+ * 对象返回值。
+ *
+ * @author smy
  */
 @Getter
 @Setter

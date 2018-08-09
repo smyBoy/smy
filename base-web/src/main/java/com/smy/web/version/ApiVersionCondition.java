@@ -1,7 +1,6 @@
 package com.smy.web.version;
 
 import lombok.AllArgsConstructor;
-import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,9 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class ApiVersionCondition implements RequestCondition<ApiVersionCondition> {
 
-    // 路径中版本的前缀， 这里用 /v[0-9]+的形式
+    /**
+     * 路径中版本的前缀， 这里用 /v[0-9]+的形式
+     */
     private final static Pattern VERSION_PREFIX_PATTERN = Pattern.compile("v(\\d+)");
 
     public static int findVersion(String path) {
@@ -31,7 +32,6 @@ public class ApiVersionCondition implements RequestCondition<ApiVersionCondition
         return new ApiVersionCondition(other.apiVersion);
     }
 
-    @Nullable
     @Override
     public ApiVersionCondition getMatchingCondition(HttpServletRequest request) {
         int version = findVersion(request.getRequestURI());

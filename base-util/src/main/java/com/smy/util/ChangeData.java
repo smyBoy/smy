@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * 变更数据。
+ * 数据变更记录。
  *
  * @author smy
  * @see ObjectUtil#update(Object, Object)

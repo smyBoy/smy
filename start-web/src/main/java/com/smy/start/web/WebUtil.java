@@ -1,24 +1,21 @@
-package com.smy.web;
+package com.smy.start.web;
 
 import com.smy.orm.WhereBuilder;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import com.smy.web.HttpServletUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by smy on 2018/7/20.
+ * web工具。
+ *
+ * @author smy
  */
 public class WebUtil {
-
-    public static HttpServletRequest getRequest() {
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-    }
 
     private static final String WHERE_BUILDER = "WhereBuilder";
 
     public WhereBuilder getWhereBuilder() {
-        return getWhereBuilder(getRequest());
+        return getWhereBuilder(HttpServletUtil.getRequest());
     }
 
     public WhereBuilder getWhereBuilder(HttpServletRequest request) {

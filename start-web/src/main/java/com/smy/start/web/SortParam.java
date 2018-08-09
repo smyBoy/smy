@@ -1,4 +1,4 @@
-package com.smy.web;
+package com.smy.start.web;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,7 +9,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
 /**
- * Created by smy on 2018/6/20.
+ * 排序参数。
+ *
+ * @author smy
  */
 @Getter
 @Setter

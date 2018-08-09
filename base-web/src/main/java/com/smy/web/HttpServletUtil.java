@@ -1,6 +1,10 @@
 package com.smy.web;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 基于HttpServlet的工具类。
@@ -9,7 +13,15 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class HttpServletUtil {
     private static String unknown = "unknown";
-    private static String local = "";
+    private static String local = "0:0:0:0:0:0:0:1";
+
+    public static HttpSession getSession() {
+        return getRequest().getSession();
+    }
+
+    public static HttpServletRequest getRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    }
 
     public static final String getIpAddress(HttpServletRequest request) {
         // 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址
@@ -30,7 +42,7 @@ public class HttpServletUtil {
             if (ip == null || ip.length() == 0 || unknown.equalsIgnoreCase(ip)) {
                 ip = request.getRemoteAddr();
             }
-            if ("0:0:0:0:0:0:0:1".equals(ip)) {
+            if (local.equals(ip)) {
                 ip = "127.0.0.1";
             }
         } else {

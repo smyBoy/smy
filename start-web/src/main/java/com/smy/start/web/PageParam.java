@@ -1,4 +1,4 @@
-package com.smy.web;
+package com.smy.start.web;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import javax.validation.constraints.Min;
 
 /**
- * Created by smy on 2018/6/20.
+ * 分页查询参数。
+ *
+ * @author smy
  */
 @Getter
 @Setter
