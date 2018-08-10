@@ -90,13 +90,13 @@ public class ApiSwaggerConfig implements InitializingBean, BeanFactoryAware {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        log.info("加载api接口文档");
+        log.info("加载swagger-api接口文档");
         if (CollectionUtils.isEmpty(swagger)) {
             log.info("加载默认RestController接口");
             beanFactory.registerSingleton("swagger0", createRestApi());
         } else {
             for (ApiSwaggerData data : swagger) {
-                log.info("api=" + data);
+                log.info("加载api:" + data);
                 beanFactory.registerSingleton("swagger" + data.getVersion(), createRestApi(data));
             }
         }

@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.smy.orm.CommonDaoImpl
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.smy.orm.CommonDaoImpl

@@ -1,0 +1,9 @@
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    customized:
+      demoTemplate:
+        database: 1
+      userTemplate:
+        database: 2

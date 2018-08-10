@@ -1,1 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.smy.web.version.ApiVersionWebMvcConfig,com.smy.web.swagger.ApiSwaggerConfig,com.smy.web.druid.DruidConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.smy.web.version.ApiVersionWebMvcConfig,\
+  com.smy.web.swagger.ApiSwaggerConfig,com.smy.web.druid.DruidConfig

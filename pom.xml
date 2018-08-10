@@ -13,6 +13,7 @@
         <module>base-orm</module>
         <module>base-web</module>
         <module>start-web</module>
+        <module>base-redis</module>
     </modules>
 
     <parent>
@@ -61,7 +62,11 @@
                 <artifactId>base-web</artifactId>
                 <version>${smy.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.smy.java</groupId>
+                <artifactId>base-redis</artifactId>
+                <version>${smy.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.smy.java</groupId>
                 <artifactId>start-web</artifactId>
