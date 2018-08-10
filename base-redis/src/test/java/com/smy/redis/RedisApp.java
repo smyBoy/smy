@@ -1,10 +1,8 @@
 package com.smy.redis;
 
-import com.smy.redis.user.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 
 /**
  * @author smy

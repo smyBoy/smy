@@ -1,6 +1,5 @@
 package com.smy.start.web;
 
-import com.smy.util.ChangeIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;

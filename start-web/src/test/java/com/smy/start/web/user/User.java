@@ -1,6 +1,5 @@
 package com.smy.start.web.user;
 
-import com.smy.start.web.BaseEntity;
 import com.smy.start.web.BaseIDEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,9 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Date;
-import java.sql.Time;
 
 /**
  * @author smy

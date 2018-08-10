@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @CachePut(value = "user", key = "#user.id")
+
     public User add(User user) {
         return user;
     }
 
-    @Cacheable(value = "user", key = "#id")
+
     public User get(String id) {
         return null;
     }

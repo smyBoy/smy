@@ -7,7 +7,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -51,7 +50,7 @@ public class CustomizedRedisConfig implements InitializingBean, BeanFactoryAware
             log.info("定制redisTemplate:" + k);
         });
     }
-
+    @SuppressWarnings("unchecked")
     private RedisTemplate redisTemplate(CustomizedRedisConfig config) {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(config.host, config.port);
         configuration.setDatabase(config.database);

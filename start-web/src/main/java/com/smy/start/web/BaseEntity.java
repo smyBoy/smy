@@ -1,18 +1,14 @@
 package com.smy.start.web;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.smy.util.ChangeIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**

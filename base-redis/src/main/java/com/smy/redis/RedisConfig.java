@@ -20,7 +20,7 @@ import java.time.Duration;
  * @author smy
  */
 public class RedisConfig extends CachingConfigurerSupport {
-    @Value("${spring.redis.ttl.day:1}")
+    @Value("${spring.redis.ttl:1}")
     private long ttl;
 
     @Bean("redisTemplate")
@@ -41,7 +41,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration cacheConfiguration =
                 RedisCacheConfiguration.defaultCacheConfig()
                         .entryTtl(Duration.ofDays(ttl))
-                        .disableCachingNullValues()
                         .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
         return RedisCacheManager.builder(factory).cacheDefaults(cacheConfiguration).build();
     }
